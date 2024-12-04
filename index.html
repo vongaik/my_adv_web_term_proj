@@ -3,31 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Search SPA</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js"></script>
+    <title>Vongai Movie Search SPA</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@200;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js"></script>
+
 </head>
 <body>
     <header>
-        <h1>Movie Finder</h1>
+        <h1>Vongai's Movie Finder</h1>
         <nav>
-            <button id="search-movies-btn">Search Movies</button>
+            <button id="search-movies-btn">Search Movies</button>  <!-- search button -->
+            <input type="text" id="query" value=" " /> <!-- search box -->
             <button id="popular-movies-btn">Popular Movies</button>
         </nav>
     </header>
-    <main id="content">
-        <!-- Content dynamically loaded -->
-    </main>
+    <div id="page-container" style="display: flex;">
+        <main id="content">
+            <!-- Content dynamically loaded -->
+            <!-- BUTTONS instead of links for grid list layout switch -->
+            <div id="layout-controls">
+                <button id="toggle-grid">Grid View</button>
+                <button id="toggle-list">List View</button>
+            </div>
+            <div id="trailerModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <iframe id="trailerIframe" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>                   
+            <br>
 
-    <!-- Mustache Templates -->
-    <script id="movie-list-template" type="text/template">
-        <div id="movies-list">
-            {{#results}}
-            <div class="movie">
+            <!-- MOVIE SEARCH RESULTS -->
+            <div id="searchResultsContainer" class="grid-view">
+                <div id="searchMovieList">
+                    <h1 style="font-family: Roboto,Helvetica,Arial,sans-serif; color: blanchedalmond">Search My Movie Finder</h1>
+                    <h4 style="color: rgba(226, 223, 27, 0.651)">Search the movie database by typing a word or phrase in the search box at the top of this page or discover popular movies right now.</h4>
+                </div> <!-- Unique id for search results list -->
+                <div id="moviedetails"></div> <!-- Details for search movies" -->
+                <div class="pagination"></div> <!-- Pagination buttons will go here -->
+            </div>
+
+        </main>
+        <div id="cast-container" class="cast-column" style="display: none">
+            
+            <!-- Cast list or Top People will render here -->
+        </div>
+    </div>
+
+    <div>
+        <footer>&copy; Vongai Kwenda 2024 </footer>
+    </div>
+
+    <!------------ Mustache Templates ------------------------>
+    <script id="movie-list-template" class="grid-view" type="text/template">
+        <h2 style="font-family: Roboto,Helvetica,Arial,sans-serif; color: #ffffff; font-size: 2rem;">| Titles</h2>
+        <!-- <hr> -->
+        <div class="movies-list">
+            {{#results}} 
+            <div class="movie" data-id="{{id}}">
                 <h2 class="movie-title" data-id="{{id}}">{{title}}</h2>
-                <img src="https://image.tmdb.org/t/p/w500/{{poster_path}}" alt="{{title}}">
+                <img src="https://image.tmdb.org/t/p/w500/{{poster_path}}" alt="{{title}}" width="50" 
+                onerror="this.src = 'https://via.placeholder.com/500x750?text=No+Image';"
+                style="max-width: 200px; height: auto;" />
                 <p>{{overview}}</p>
+                <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" class="ipc-icon ipc-icon--star-inline" viewBox="0 0 24 24" fill="gold" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
+                <span>{{vote_average}}</span>
+                <div class="expandMovie" style="display:none"></div>
             </div>
             {{/results}}
         </div>
@@ -35,24 +79,60 @@
 
     <script id="movie-details-template" type="text/template">
         <div id="movie-details">
-            <h2>{{title}}</h2>
-            <img src="https://image.tmdb.org/t/p/w500/{{poster_path}}" alt="{{title}}">
-            <p>{{overview}}</p>
-            <h3>Cast</h3>
+            <h3>Movie Details</h3>
             <ul>
-                {{#credits.cast}}
-                <li>{{name}} as {{character}}</li>
-                {{/credits.cast}}
+                <li><strong>Release Date:</strong> {{release_date}}</li>
+                <li><strong>Genre(s):</strong> {{#genres}}{{name}}, {{/genres}}</li>
+                <li><strong>Age Rating:</strong> {{certification}}</li>
+                <li><strong>Country of Origin:</strong> {{#production_countries}}{{name}}, {{/production_countries}}</li>
+                <li><strong>Runtime:</strong> {{runtime}} minutes</li>
+                <!-- <li><strong>Storyline:</strong> {{overview}}</li> -->
             </ul>
             <h3>Reviews</h3>
+            {{#reviews.results}}
             <ul>
-                {{#reviews.results}}
-                <li>{{author}}: {{content}}</li>
-                {{/reviews.results}}
+                <li><strong>{{author}}:</strong> {{{content}}}</li>
             </ul>
+            {{/reviews.results}}
+            {{^reviews.results}}
+            <p>No reviews available.</p>
+            {{/reviews.results}}
         </div>
     </script>
+    
 
-    <script src="js/app.js"></script>
+    <!-- Mustache Template for the Cast -->
+    <script id="cast-list-template" type="text/template">
+        <h1>{{#isTopPeople}}Top People{{/isTopPeople}}{{^isTopPeople}}Cast{{/isTopPeople}}</h1>
+            <br>
+        <ul class="cast-list">
+          {{#cast}}
+            <div class="cast-item" data-id="{{id}}">
+            <li>
+              <img class="cast-photo" src="https://image.tmdb.org/t/p/w200{{profile_path}}" alt="{{name}}" onerror="this.src = 'https://via.placeholder.com/500x750?text=No+Image';">
+              <div class="cast-info">
+                <span class="cast-name">{{name}}</span>
+                <span class="cast-role">as {{character}}</span>
+              </div>
+              <div class="expandCast" style="display:none"></div>
+            </li>
+        </div>
+          {{/cast}}
+        </ul>
+    </script>
+      
+
+    <script id="actor-details-template" type="text/template">
+        <div id="actor-details">
+            <p><strong>Job Title:</strong> {{known_for_department}}</p>
+            <p>{{biography}}</p>
+            <p>Born: {{birthday}} • {{place_of_birth}}</p>
+        </div>
+    </script>    
+
+    <script src="app.js"></script>
+
+    
 </body>
 </html>
+

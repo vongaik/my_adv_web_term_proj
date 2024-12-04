@@ -1,0 +1,260 @@
+body {
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #330f0fc5;
+    
+}
+
+h1 {
+    color: white;
+}
+#page-container {
+    display: flex;
+  }
+  
+  #content {
+    flex: 2;
+    padding: 10px;
+    margin-top: 20px;
+  }
+
+  #page-container {
+    /* padding: 20px; */
+    min-height: calc(120vh - 100px); /* Adjust this value based on my footer height */
+  }
+  
+  #cast-container {
+    flex: 1;
+    padding: 10px;
+    /* border-left: 1px solid #ccc; */
+    overflow-y: auto; /* Handle overflow for long lists */
+    background-color: #ca787856;
+  }
+  
+
+#popular-title {
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    color: hwb(0 92% 8%);
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+}
+
+#search-heading {
+    font-family: 'Roboto Condensed', Arial, sans-serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgb(248, 226, 226);
+    margin-bottom: 50px;
+
+}
+
+h2 {
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    font-size: 2rem;
+    font-weight: 400; /* Light style for thin text */
+    color: black;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header nav button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+header nav button:hover {
+    background-color: #777;
+}
+main {
+    padding: 30px;
+}
+
+
+/* pointer when hover over these book items */
+.movie {
+    cursor: pointer;
+  }
+
+.movies-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ipc-icon ipc-icon--star-inline {
+    color: #f5c518
+}
+
+.ipc-icon ipc-icon--star-inline {
+    height: .8em;
+    width: 1em;
+    margin-right: .15em
+}
+
+.ipc-icon ipc-icon--star-inline {
+    font-weight: 900
+}
+
+
+/* grid/list buttons design */
+#layout-controls button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: rgba(252, 235, 9, 0.788);
+    border: none;
+    border-radius: 4px;
+}
+
+#layout-controls button:hover {
+    background-color: #ff0037a2;
+    color: white;
+}
+
+/* Grid View */
+.grid-view .movie {
+    width: 300px;
+}
+
+/* List View */
+.list-view .movie {
+    width: 100%; /* Full width */
+}
+
+.movie {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(252, 243, 243);
+    box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.692);
+    margin: 8px;
+}
+.movie img {
+    max-width: 100%;
+    height: auto;
+    width: 50px; 
+}
+
+/* @media (min-width: 768px) {
+    .movie img {
+        width: 300px;
+    }
+} */
+
+/* ----- CSS Styling for Cast Column ----- */
+
+.cast-column {
+    width: 25%;
+    padding: 10px;
+    overflow-y: auto;
+    /* border-left: 1px solid #ccc; */
+  }
+  
+  .cast-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .cast-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .cast-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .cast-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cast-name {
+    font-weight: bold;
+    color: #f7f0f0;
+  }
+  
+  .cast-role {
+    font-size: 0.9rem;
+    color: blanchedalmond;
+  }
+
+
+
+.expandCast {
+    display: none;  /* Start hidden */
+    width: 100%;    /* Ensure it takes the full width */
+    background: #f9f9f9;  /* Optional: Add a background color */
+    padding: 10px;  /* Optional: Add padding for content */
+    box-sizing: border-box;  /* Prevent padding from affecting width */
+    clear: both;    /* Ensures it clears any floated elements inside .cast-item */
+}
+
+.expandMovie {
+    display: none;  /* Start hidden */
+    width: 100%;    /* Ensure it takes the full width */
+    background: #f9f9f9;  /* Optional: Add a background color */
+    padding: 10px;  /* Optional: Add padding for content */
+    box-sizing: border-box;  /* Prevent padding from affecting width */
+    clear: both;    /* Ensures it clears any floated elements inside .cast-item */
+}
+
+  
+
+
+
+/* Styling pagination buttons */
+
+.pagination {
+    margin: 20px 0;
+    margin-top: 40px;
+    text-align: center; /* Center pagination */
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 25%;
+}
+
+.pagination button:hover {
+    background-color: #ff0037a2;
+}
+
+.active-page {
+    background-color: #2e0101;
+    color: rgb(255, 255, 255);
+}
+
+.inactive-page {
+    background-color: rgb(255, 255, 255);
+}
+
+
+
+footer {
+    padding: 190px 0;
+    background-color:  #333;
+    /* margin-top: 80px; */
+    color: whitesmoke; 
+    text-align: center;
+    font-size: 15px; /* Slightly larger text for readability */
+}
